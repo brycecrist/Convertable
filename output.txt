@@ -1,0 +1,6 @@
+"function example() {\n"
+"\tconsole.log("Hello world!")\n"
+"\tif (true) {\n"
+"\t\tconsole.log("I'm true!")\n"
+"\t}\n"
+"}"
