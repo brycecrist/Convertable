@@ -1,4 +1,5 @@
-# JS/TXT Converter
+# Convertable 
+JS/TXT Converter
 Written in Python 3
 
 ## The Problem:
