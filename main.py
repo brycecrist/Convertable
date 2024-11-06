@@ -1,4 +1,6 @@
 import argparse
+from typing import Literal
+
 
 def read_file(filename) -> list[str]:
     original_file_contents: list[str] = None
@@ -8,6 +10,7 @@ def read_file(filename) -> list[str]:
 
     return original_file_contents
 
+
 def convert_js_to_text(filename) -> None:
     original_file_contents: list[str] = read_file(filename)
     formatted_file_contents: list[str] = []
@@ -15,6 +18,14 @@ def convert_js_to_text(filename) -> None:
     for line in original_file_contents:
         curr_line = line
         curr_line = curr_line.replace("    ", "\\t").replace("\n", '\\n"\n')
+
+        # Special rules:
+        curr_line = (
+            curr_line.replace(" $e ", '"$e"')
+            .replace(" $t ", '"$t"')
+            .replace(" $f ", '"$f"')
+        )
+
         formatted_file_contents.append(f'"{curr_line}')
 
     with open("output.txt", "w") as f:
@@ -24,13 +35,35 @@ def convert_js_to_text(filename) -> None:
             else:
                 f.write(line)
 
+
 def convert_text_to_js(filename) -> None:
     original_file_contents: list[str] = read_file(filename)
     formatted_file_contents: list[str] = []
 
     for line in original_file_contents:
         curr_line = line
-        curr_line = curr_line.replace("\\t", "    ").replace('\\n"\n', "\n").replace('}"', "}").replace(";", "")
+
+        curr_line = curr_line[0:]
+
+        curr_line = (
+            curr_line.replace("\\t", "    ")
+            .replace('\\n"', "\n")
+            .replace("\\n'", "\n")
+            .replace("\\n", "\n")
+            .replace(';"', ";")
+            .replace('}"', "}")
+            .replace('{"', "{")
+            .replace('\\"', '"')
+        )
+
+        # Special rules:
+        curr_line = (
+            curr_line.replace('"$e"', " $e ")
+            .replace('"$t"', " $t ")
+            .replace('"$f"', " $f ")
+            .replace('"$f"', " $f ")
+        )
+
         formatted_file_contents.append(f'"{curr_line}')
 
     with open("output.js", "w") as f:
@@ -39,17 +72,18 @@ def convert_text_to_js(filename) -> None:
             # so slice it up
             f.write(line[2:])
 
+
 def init_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-                    prog='JSTranscriber',
-                    description='Hellos your world',
-                    epilog='Beans')
-    
+        prog="JSTranscriber", description="Hellos your world", epilog="Beans"
+    )
+
     parser.add_argument("filename")
     parser.add_argument("-js", action="store_true")
     parser.add_argument("-txt", action="store_true")
 
     return parser
+
 
 def do_not_convert(args) -> bool:
     filename = args.filename
@@ -63,7 +97,7 @@ def do_not_convert(args) -> bool:
     if not any(["js" in filename, "txt" in filename]):
         print("The filetype must be either .js or .txt!")
         bad_filetype = True
-    
+
     if not args.js and not args.txt:
         print("Enter one of the following conversion options: -txt, -js")
         no_conversion_option = True
@@ -74,8 +108,9 @@ def do_not_convert(args) -> bool:
 
     if any([bad_filetype, no_conversion_option, both_conversion_options]):
         return True
-    
+
     return False
+
 
 def main():
     parser = init_parser()
@@ -91,6 +126,7 @@ def main():
 
     if args.txt:
         convert_js_to_text(filename)
+
 
 if __name__ == "__main__":
     main()
