@@ -58,7 +58,9 @@ def do_not_convert(args) -> bool:
     no_conversion_option = False
     both_conversion_options = False
 
-    if "js" not in filename or "txt" not in filename:
+    allowed_filetypes = ["txt", "js"]
+
+    if not any(["js" in filename, "txt" in filename]):
         print("The filetype must be either .js or .txt!")
         bad_filetype = True
     
