@@ -17,7 +17,14 @@ I have! For example, it's a pain to update the following code by hand, especiall
 ## The Solution:
 I have built a simple tool that allows one to write the above code in Javascript, within a Javascript file, and then convert it to a properly escaped, stringified txt file.
 
-This program also allows for the opposite. You could pass in the filename of the above example in a txt file and have it converted back to Javascript.
+This program also allows for the opposite. You could pass in the filename of the above example in a txt file and have it converted back to Javascript like so:
+
+    function example() {
+        console.log("Hello world!")
+        if (true) {
+            console.log("I'm true!")
+        }
+    }
 
 Example files are included: `example.js` which can be converted to `output.txt`, as well as `output.js` which is the result of converting `output.txt` back to Javascript.
 
