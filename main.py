@@ -30,7 +30,7 @@ def convert_text_to_js(filename) -> None:
 
     for line in original_file_contents:
         curr_line = line
-        curr_line = curr_line.replace("\\t", "    ").replace('\\n"\n', "\n").replace('}"', "}")
+        curr_line = curr_line.replace("\\t", "    ").replace('\\n"\n', "\n").replace('}"', "}").replace(";", "")
         formatted_file_contents.append(f'"{curr_line}')
 
     with open("output.js", "w") as f:
